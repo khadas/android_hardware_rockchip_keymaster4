@@ -20,9 +20,17 @@ cc_binary {
         "libRkkeymaster_messages",
         "libRkkeymaster_portable",
         "libRkpurekeymasterdevice",
+        "libRkTeeKeymaster",
         "liblog",
         "libutils",
     ],
+}
+
+cc_rockchip_prebuilt_obj {
+    name: "258be795-f9ca-40e6-a8699ce6886c5d5d.ta",
+    src:  "v1/ta/258be795-f9ca-40e6-a8699ce6886c5d5d.ta",
+    vendor: true,
+    sub_dir: "lib/optee_armtz",
 }
 
 cc_rockchip_prebuilt_obj {
