@@ -1,9 +1,28 @@
+/*
+ **
+ ** Copyright 2017, The Android Open Source Project
+ **
+ ** Licensed under the Apache License, Version 2.0 (the "License");
+ ** you may not use this file except in compliance with the License.
+ ** You may obtain a copy of the License at
+ **
+ **     http://www.apache.org/licenses/LICENSE-2.0
+ **
+ ** Unless required by applicable law or agreed to in writing, software
+ ** distributed under the License is distributed on an "AS IS" BASIS,
+ ** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ** See the License for the specific language governing permissions and
+ ** limitations under the License.
+ */
+
 #ifndef HIDL_android_hardware_keymaster_V4_0_RkKeymaster4Device_H_
 #define HIDL_android_hardware_keymaster_V4_0_RkKeymaster4Device_H_
 
 #include <android/hardware/keymaster/4.0/IKeymasterDevice.h>
 
+#include <hardware/keymaster_defs.h>
 #include <hidl/Status.h>
+#include <keymaster/km_version.h>
 
 namespace keymaster {
 class AndroidKeymaster;
@@ -31,7 +50,8 @@ using ::android::hardware::keymaster::V4_0::VerificationToken;
 
 class RkKeymaster4Device : public IKeymasterDevice {
   public:
-    explicit RkKeymaster4Device(SecurityLevel securityLevel);
+    explicit RkKeymaster4Device(SecurityLevel securityLevel)
+        : RkKeymaster4Device(KmVersion::KEYMASTER_4, securityLevel) {}
     virtual ~RkKeymaster4Device();
 
     Return<void> getHardwareInfo(getHardwareInfo_cb _hidl_cb) override;
@@ -81,10 +101,17 @@ class RkKeymaster4Device : public IKeymasterDevice {
                         const VerificationToken& verificationToken, finish_cb _hidl_cb) override;
     Return<ErrorCode> abort(uint64_t operationHandle) override;
 
-  private:
+  protected:
+    RkKeymaster4Device(::keymaster::KmVersion version, SecurityLevel securityLevel);
+
     std::unique_ptr<::keymaster::AndroidKeymaster> impl_;
     SecurityLevel securityLevel_;
 };
+
+// Convert HIDL key parametes to old keymaster param set.  Note that this does *not* copy the blobs
+// from keyParams, only pointers to them.  The keyParams instance retains ownership and must
+// continue to exist.
+keymaster_key_param_set_t hidlKeyParams2Km(const hidl_vec<KeyParameter>& keyParams);
 
 IKeymasterDevice* CreateKeymasterDevice(SecurityLevel securityLevel);
 

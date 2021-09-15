@@ -19,8 +19,11 @@ cc_binary {
         "libRkkeymaster4",
         "libRkkeymaster_messages",
         "libRkkeymaster_portable",
-        "libRkpurekeymasterdevice",
+        "libRkpuresoftkeymasterdevice",
+        "libcppbor_external",
+        "libRkcppcose_rkp",
         "libRkTeeKeymaster",
+        "libRksoft_attestation_cert",
         "liblog",
         "libutils",
     ],
@@ -114,6 +117,137 @@ cc_prebuilt_library_shared {
         },
         lib32: {
             srcs: ["prebuilts/arm/libRkpurekeymasterdevice.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+cc_binary {
+    name: "android.hardware.security.keymint-service.optee",
+    relative_install_path: "hw",
+    init_rc: ["android.hardware.security.keymint-service.optee.rc"],
+    vintf_fragments: [
+        "android.hardware.security.keymint-service.optee.xml",
+        "android.hardware.security.sharedsecret-service.optee.xml",
+        "android.hardware.security.secureclock-service.optee.xml",
+    ],
+    vendor: true,
+    cflags: [
+        "-Wall",
+        "-Wextra",
+    ],
+    include_dirs:[
+        "system/keymaster/include",
+        "system/keymaster/ng/include",
+    ],
+    shared_libs: [
+        "android.hardware.security.keymint-V1-ndk_platform",
+        "android.hardware.security.sharedsecret-V1-ndk_platform",
+        "android.hardware.security.secureclock-V1-ndk_platform",
+        "libbase",
+        "libbinder_ndk",
+        "libhardware",
+        "libcppbor_external",
+        "libcrypto",
+        "libRkkeymaster_portable",
+        "libRkkeymint",
+        "liblog",
+        "libRkpuresoftkeymasterdevice",
+        "libutils",
+    ],
+    srcs: [
+        "keymint_service.cpp",
+    ],
+    required: [
+        "RemoteProvisioner",
+        "android.hardware.hardware_keystore.xml",
+    ],
+}
+
+cc_prebuilt_library_shared {
+    name: "libRkkeymint",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/libRkkeymint.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/libRkkeymint.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libRkpuresoftkeymasterdevice",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/libRkpuresoftkeymasterdevice.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/libRkpuresoftkeymasterdevice.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libcppbor_external",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/libcppbor_external.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/libcppbor_external.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libRkcppcose_rkp",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/libRkcppcose_rkp.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/libRkcppcose_rkp.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libRksoft_attestation_cert",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/libRksoft_attestation_cert.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/libRksoft_attestation_cert.so"],
         },
     },
     strip: {

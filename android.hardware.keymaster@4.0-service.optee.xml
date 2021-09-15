@@ -4,7 +4,7 @@
         <transport>hwbinder</transport>
         <version>4.0</version>
         <interface>
-        <name>IKeymasterDevice</name>
+            <name>IKeymasterDevice</name>
             <instance>default</instance>
         </interface>
     </hal>
