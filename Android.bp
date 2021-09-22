@@ -156,6 +156,7 @@ cc_binary {
         "libRkkeymint",
         "liblog",
         "libRkpuresoftkeymasterdevice",
+	"lib_Rk_keymaster_keymint_utils",
         "libutils",
     ],
     srcs: [
@@ -178,6 +179,24 @@ cc_prebuilt_library_shared {
             srcs: ["prebuilts/arm/libRkkeymint.so"],
         },
     },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    vendor: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "lib_Rk_keymaster_keymint_utils",
+    compile_multilib: "both",
+    multilib: {
+        lib64: {
+            srcs: ["prebuilts/arm64/lib_Rk_keymaster_keymint_utils.so"],
+        },
+        lib32: {
+            srcs: ["prebuilts/arm/lib_Rk_keymaster_keymint_utils.so"],
+        },
+    },  
     strip: {
         none: true,
     },
