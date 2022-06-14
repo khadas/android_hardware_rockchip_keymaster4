@@ -1,22 +1,37 @@
 cc_binary {
-    name: "android.hardware.keymaster@4.0-service.optee",
-    defaults: ["hidl_defaults"],
+    name: "android.hardware.security.keymint-service.optee",
     relative_install_path: "hw",
-    vendor: true,
-    init_rc: ["android.hardware.keymaster@4.0-service.optee.rc"],
-    vintf_fragments: ["android.hardware.keymaster@4.0-service.optee.xml"],
-    srcs: [
-        "service.cpp",
+    init_rc: ["android.hardware.security.keymint-service.optee.rc"],
+    vintf_fragments: [
+        "android.hardware.security.keymint-service.optee.xml",
+        "android.hardware.security.sharedsecret-service.optee.xml",
+        "android.hardware.security.secureclock-service.optee.xml",
     ],
-
+    vendor: true,
+    cflags: [
+        "-Wall",
+        "-Wextra",
+    ],
+    include_dirs:[
+        "system/keymaster/include",
+        "system/keymaster/ng/include",
+    ],
     shared_libs: [
-        "android.hardware.keymaster@4.0",
-        "libkeymaster4support",
+        "android.hardware.security.keymint-V1-ndk_platform",
+        "android.hardware.security.sharedsecret-V1-ndk_platform",
+        "android.hardware.security.secureclock-V1-ndk_platform",
         "libbase",
-        "libcutils",
+        "libbinder_ndk",
         "libhardware",
-        "libhidlbase",
-        "libRkkeymaster4",
+        "libcppbor_external",
+        "libcrypto",
+        "libRkkeymaster_portable",
+        "libRkkeymint",
+        "liblog",
+        "libRkpuresoftkeymasterdevice",
+	    "lib_Rk_keymaster_keymint_utils",
+        "libutils",
+         "libRkkeymaster4",
         "libRkkeymaster_messages",
         "libRkkeymaster_portable",
         "libRkpuresoftkeymasterdevice",
@@ -24,8 +39,15 @@ cc_binary {
         "libRkcppcose_rkp",
         "libRkTeeKeymaster",
         "libRksoft_attestation_cert",
-        "liblog",
-        "libutils",
+        "android.hardware.keymaster@4.0",
+        "libkeymaster4support",
+    ],
+    srcs: [
+        "keymint_service.cpp",
+    ],
+    required: [
+        "RemoteProvisioner",
+        "android.hardware.hardware_keystore.xml",
     ],
 }
 
@@ -124,48 +146,6 @@ cc_prebuilt_library_shared {
     },
     check_elf_files: false,
     vendor: true,
-}
-cc_binary {
-    name: "android.hardware.security.keymint-service.optee",
-    relative_install_path: "hw",
-    init_rc: ["android.hardware.security.keymint-service.optee.rc"],
-    vintf_fragments: [
-        "android.hardware.security.keymint-service.optee.xml",
-        "android.hardware.security.sharedsecret-service.optee.xml",
-        "android.hardware.security.secureclock-service.optee.xml",
-    ],
-    vendor: true,
-    cflags: [
-        "-Wall",
-        "-Wextra",
-    ],
-    include_dirs:[
-        "system/keymaster/include",
-        "system/keymaster/ng/include",
-    ],
-    shared_libs: [
-        "android.hardware.security.keymint-V1-ndk_platform",
-        "android.hardware.security.sharedsecret-V1-ndk_platform",
-        "android.hardware.security.secureclock-V1-ndk_platform",
-        "libbase",
-        "libbinder_ndk",
-        "libhardware",
-        "libcppbor_external",
-        "libcrypto",
-        "libRkkeymaster_portable",
-        "libRkkeymint",
-        "liblog",
-        "libRkpuresoftkeymasterdevice",
-	"lib_Rk_keymaster_keymint_utils",
-        "libutils",
-    ],
-    srcs: [
-        "keymint_service.cpp",
-    ],
-    required: [
-        "RemoteProvisioner",
-        "android.hardware.hardware_keystore.xml",
-    ],
 }
 
 cc_prebuilt_library_shared {
