@@ -109,14 +109,14 @@ cc_prebuilt_library_shared {
 }
 
 cc_prebuilt_library_shared {
-    name: "libRkpurekeymasterdevice",
+    name: "libRksoftkeymasterdevice",
     compile_multilib: "both",
     multilib: {
         lib64: {
-            srcs: ["prebuilts/arm64/libRkpurekeymasterdevice.so"],
+            srcs: ["prebuilts/arm64/libRksoftkeymasterdevice.so"],
         },
         lib32: {
-            srcs: ["prebuilts/arm/libRkpurekeymasterdevice.so"],
+            srcs: ["prebuilts/arm/libRksoftkeymasterdevice.so"],
         },
     },
     strip: {
@@ -125,6 +125,7 @@ cc_prebuilt_library_shared {
     check_elf_files: false,
     vendor: true,
 }
+
 cc_binary {
     name: "android.hardware.security.keymint-service.optee",
     relative_install_path: "hw",
@@ -144,7 +145,7 @@ cc_binary {
         "system/keymaster/ng/include",
     ],
     shared_libs: [
-        "android.hardware.security.keymint-V1-ndk",
+        "android.hardware.security.keymint-V2-ndk",
         "android.hardware.security.sharedsecret-V1-ndk",
         "android.hardware.security.secureclock-V1-ndk",
         "libbase",
@@ -156,7 +157,15 @@ cc_binary {
         "libRkkeymint",
         "liblog",
         "libRkpuresoftkeymasterdevice",
-	"lib_Rk_keymaster_keymint_utils",
+        "lib_Rk_keymaster_keymint_utils",
+        "android.hardware.keymaster@4.0",
+        "libkeymaster4support",
+        "libRkkeymaster4",
+        "libRkkeymaster_messages",
+        "libRkcppcose_rkp",
+        "libRksoftkeymasterdevice",
+        "libRkTeeKeymaster",
+        "libRksoft_attestation_cert",
         "libutils",
     ],
     srcs: [
